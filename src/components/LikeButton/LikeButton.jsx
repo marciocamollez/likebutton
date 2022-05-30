@@ -5,7 +5,7 @@ import LikeModel from '../../models/like.model';
 function LikeButton({ item }) {
 
   // Função para criar e carregar Storage caso não exista no navegador
-  function carregaStorage(){
+  function loadStorage(){
     const characterDb = localStorage['likeCharacters'];
     const likeCharacters = characterDb ? JSON.parse(characterDb) : [];
     localStorage['likeCharacters'] = JSON.stringify(likeCharacters);
@@ -18,7 +18,7 @@ function LikeButton({ item }) {
   useEffect(() => {
   
     // Chama a função para ser carregado no primeiro load
-    carregaStorage();
+    loadStorage();
 
     // Pega a base e armazena na variável
     const characterDb = localStorage['likeCharacters'];
@@ -39,9 +39,15 @@ function LikeButton({ item }) {
     const characterDb = localStorage['likeCharacters'];
     const likeCharacters = JSON.parse(characterDb) || [];
 
-    // Após o clique, adiciona no vetor e troca o estado para true para fazer a animação
-    likeCharacters.push(new LikeModel(item.id, item.name, true));
-    setIsLike(true);
+    // Verifica se o item já está na lista. Caso sim, ao clicar de novo, ele remove (pop). Caso não, ele adiciona (push)
+    if(characterDb.includes(item.id)){
+      setIsLike(false);
+      likeCharacters.pop(new LikeModel(item.id, item.name, false));
+    } else {
+      // Após o clique, adiciona no vetor e troca o estado para true para fazer a animação
+      likeCharacters.push(new LikeModel(item.id, item.name, true));
+      setIsLike(true);
+    }
 
     // Atualiza o índice
     localStorage['likeCharacters'] = JSON.stringify(likeCharacters);
