@@ -42,15 +42,23 @@ function LikeButton({ item }) {
     // Verifica se o item já está na lista. Caso sim, ao clicar de novo, ele remove (pop). Caso não, ele adiciona (push)
     if(characterDb.includes(item.id)){
       setIsLike(false);
-      likeCharacters.pop(new LikeModel(item.id, item.name, false));
+      // Pega o id do que foi clicado pra descurtir e compara se existe na lista, caso sim ele filtra, removendo o clicado e atualizando o novo array
+      const filtered = likeCharacters.filter(a => a.id !== item.id ) ;
+      // Atualiza o índice
+      localStorage['likeCharacters'] = JSON.stringify(filtered);
+      //console.log(filtered);
+
     } else {
       // Após o clique, adiciona no vetor e troca o estado para true para fazer a animação
       likeCharacters.push(new LikeModel(item.id, item.name, true));
       setIsLike(true);
+      // Atualiza o índice
+      localStorage['likeCharacters'] = JSON.stringify(likeCharacters);
     }
 
-    // Atualiza o índice
-    localStorage['likeCharacters'] = JSON.stringify(likeCharacters);
+    
+    
+    // console.log("oi" + likeCharacters.length);
 
   };
 
@@ -62,7 +70,7 @@ function LikeButton({ item }) {
         onClick={handleLike}
         className={`bt-like like-button ${isLike ? 'liked' : ''}`}
       >
-        curtiu {item.name}
+       
       </button>
 
     </span>

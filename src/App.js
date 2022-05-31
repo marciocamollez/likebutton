@@ -22,7 +22,7 @@ function App() {
       {items.map((item) => (
         <div key={item.id} style={{ marginBottom: "20px" }}>
       
-            <span>{item.name}</span>
+            <span>{item.name} </span>
             <LikeButton item={item}  />
 
         </div>
